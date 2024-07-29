@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela Inicial</title>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+    <header>
+        <div class="profile-icon" onclick="openoi()"> 
+            <img src="https://i.postimg.cc/kGLLq8Sw/usef.png" alt="Perfil do Usuário">
+        </div>
+       
+        <nav>
+            <a href="/agendamentos">Agendamentos</a>
+            <a href="/profissionais">Profissionais</a>
+            <a href="/servicos">Serviços</a>
+            <a href="/favoritos">Favoritos</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Bem-vindo à NailEase</h1>
+        <div class="content">
+            <!-- Conteúdo da página -->
+            <p>Aqui você pode visualizar seus agendamentos, acessar serviços disponíveis e gerenciar seus favoritos.</p>
+        </div>
+    </div>
+
+    <script>
+        function openoi() {
+            window.location.href = '/oi'; // Redireciona para a página de login ou cadastro
+        }
+       
+    </script>
+</body>
+</html>
