@@ -1,119 +1,138 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
+* {
     padding: 0;
-  
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-header {
-    background: linear-gradient(145deg, rgb(171, 82, 212), rgb(104,153,218));
-    color: #fff;
-    padding: 20px;
+body {
+    background-image: url(https://i.postimg.cc/s2pfncrL/background.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.box {
+    display: flex;
+    width: 800px;
+    justify-content: center;
     align-items: center;
 }
 
-.profile-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    overflow: hidden;
-    cursor: pointer; /* Adicionado para indicar que é clicável */
-}
-
-
-.profile-icon img {
+.form-box {
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(40px);
+    padding: 30px 40px;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 500px; 
+    border-radius: 20px; 
+    position: relative;
 }
 
-
-
-.container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
+.form-box h2 {
+    font-size: 30px;
 }
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-}
-
-/* Exemplo de estilo para conteúdo da página */
-.content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-/* Estilos para o modal */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 20% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    border-radius: 5px;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
+.form-box p {
     font-weight: bold;
+    color: #3D3D3D;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
+.form-box p a {
+    color: #FF008A;
     text-decoration: none;
-    cursor: pointer;
+    transition: color 0.3s;
 }
-h1{
-    background-image: url(https://i.postimg.cc/c1B0Tw8g/gif.gif);
-    background-size: cover;
-    background-position: center;
-    color: transparent;
-    background-clip: text;
-    -webkit-background-clip: text;
+
+.form-box p a:hover {
+    text-decoration: underline;
 }
-nav{
-    background: white;
-    width: 360px;
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
-    border-radius: 22px;
-    cursor: pointer;
-    
+
+.form-box form {
+    margin: 20px 0;
 }
-nav > a{
+
+.input-group-group {
+    display: flex; 
+    gap: 10px; 
+}
+
+form .input-group {
+    position: relative;
+    margin-bottom: 20px;
+    flex: 1; 
+}
+
+form .input-group label {
+    color: #3D3D3D;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+form .input-group input {
+    width: 100%;
+    height: 47px;
+    background-color: rgba(255, 255, 255, 0.32);
+    border-radius: 20px;
+    outline: none;
+    border: 2px solid transparent;
+    padding: 15px;
+    padding-right: 40px;
+    font-size: 15px;
+    color: #616161;
+    transition: all 0.4s ease;
+}
+
+form .input-group input:focus {
+    border-color: #ff008869;
+}
+
+form .input-group i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(5px);
     color: black;
-    text-decoration: none;
-    padding: 8px 3px;
-    border-radius: 22px;
-    cursor: pointer;
+    font-size: 18px;
 }
-nav > a:hover{
-    transition: 0.25s;
-    background: rgb(56,130,209);
+
+form .input-group button {
+    width: 100%;
+    height: 47px;
+    background: #FF008A;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    margin-top: 15px;
     color: white;
     cursor: pointer;
+    font-size: 16px;
+}
 
+form .input-group button:hover {
+    background-color: #f02f96;
+}
+
+@media (max-width: 930px) {
+    .box {
+        width: 100%;
+        max-width: 700px; 
+    }
+    .form-box {
+        border-radius: 20px; 
+    }
+}
+
+@media (max-width: 500px) {
+    .input-group-group {
+        flex-direction: column; 
+    }
 }
