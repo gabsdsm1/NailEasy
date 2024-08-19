@@ -1,38 +1,184 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela Inicial</title>
     <link rel="stylesheet" href="/static/index.css">
-</head>
-<body>
-    <header>
-        <div class="profile-icon" onclick="openoi()"> 
-            <img src="https://i.postimg.cc/kGLLq8Sw/usef.png" alt="Perfil do Usuário">
-        </div>
-       
-        <nav>
-            <a href="/agendamentos">Agendamentos</a>
-            <a href="/profissionais">Profissionais</a>
-            <a href="/servicos">Serviços</a>
-            <a href="/favoritos">Favoritos</a>
-        </nav>
-    </header>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Cadastro</title>
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-    <div class="container">
-        <h1>Bem-vindo à NailEase</h1>
-        <div class="content">
-            <!-- Conteúdo da página -->
-            <p>Aqui você pode visualizar seus agendamentos, acessar serviços disponíveis e gerenciar seus favoritos.</p>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAD_O5NG9q7qxlq1o9U5E5e84v6WeYMeTI",
+            authDomain: "naileasy-d350d.firebaseapp.com",
+            projectId: "naileasy-d350d",
+            storageBucket: "naileasy-d350d.appspot.com",
+            messagingSenderId: "614713517424",
+            appId: "1:614713517424:web:68035731df0ac233249bb5",
+            measurementId: "G-67XJQ31RPD"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        function isValidPhoneNumber(phone) {
+            const phoneRegex = /^\d{11}$/; // 11 dígitos para o telefone com DDD
+            return phoneRegex.test(phone);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form[name="Registre"]');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('senha').value;
+                const confirmPassword = document.getElementById('Confirmarsenha').value;
+                const name = document.getElementById('nome').value;
+                const phone = document.getElementById('telefone').value;
+
+                // Validação básica
+                if (!email || !password || !name || !phone || !confirmPassword) {
+                    alert('Por favor, preencha todos os campos.');
+                    return;
+                }
+
+                // Validação do telefone
+                if (!isValidPhoneNumber(phone)) {
+                    alert('O telefone deve conter 11 dígitos, incluindo o DDD.');
+                    return;
+                }
+
+                // Validação da confirmação da senha
+                if (password !== confirmPassword) {
+                    alert('As senhas não coincidem.');
+                    return;
+                }
+
+                // Criação do usuário com Firebase
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then(async (userCredential) => {
+                        // Usuário criado
+                        const user = userCredential.user;
+                        console.log('Usuário criado:', user);
+
+                        // Salva os dados adicionais no Firestore
+                        const userId = user.uid; // ID do usuário criado
+                        try {
+                            await setDoc(doc(db, 'clientes', userId), {
+                                name: name,
+                                phone: phone,
+                                email: email
+                            });
+                            console.log('Dados salvos com sucesso');
+
+                            alert('Cadastro realizado com sucesso!');
+                            // vai para a página de login
+                            window.location.href = '/login';
+                        } catch (error) {
+                            console.error('Erro ao salvar dados:', error);
+                            alert(`Erro ao salvar dados: ${error.message}`);
+                        }
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+
+                        if (errorCode === 'auth/email-already-in-use') {
+                            alert('O e-mail já está em uso. Por favor, utilize outro e-mail.');
+                        } else {
+                            console.error('Erro ao criar usuário:', errorCode, errorMessage);
+                            alert(`Algo deu errado: ${errorMessage}`);
+                        }
+                    });
+
+            });
+
+            // código JavaScript para alternar a visibilidade das senha
+            const toggleSenha = document.getElementById('toggleSenha');
+            const senhaInput = document.getElementById('senha');
+
+            const toggleConfirmarSenha = document.getElementById('toggleConfirmarSenha');
+            const confirmarSenhaInput = document.getElementById('Confirmarsenha');
+
+            // alternar a visibilidade da senha
+            function togglePasswordVisibility(inputField, icon) {
+                if (inputField.type === 'password') {
+                    inputField.type = 'text';
+                    icon.classList.remove('fa-lock');
+                    icon.classList.add('fa-eye');
+                } else {
+                    inputField.type = 'password';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-lock');
+                }
+            }
+
+            // se clicar alternar a visibilidade
+            toggleSenha.addEventListener('click', () => {
+                togglePasswordVisibility(senhaInput, toggleSenha);
+            });
+
+            toggleConfirmarSenha.addEventListener('click', () => {
+                togglePasswordVisibility(confirmarSenhaInput, toggleConfirmarSenha);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="box">
+        <div class="form-box">
+            <h2>Cadastre-se</h2>
+            <p> Já possui uma conta? <a href="/login"> Faça login </a> </p>
+            <form name="Registre">
+                <div class="input-group">
+                    <label for="nome"> Nome Completo</label>
+                    <input type="text" id="nome" placeholder="Digite o seu nome completo" required>
+                    <i class="fas fa-user"></i>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="Digite o seu email" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+
+                <div class="input-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" placeholder="Digite o seu telefone" required>
+                    <i class="fas fa-phone"></i>
+                </div>
+
+                <div class="input-group-group">
+                    <div class="input-group">
+                        <label for="senha">Senha</label>
+                        <input type="password" id="senha" placeholder="Digite sua senha" required>
+                        <i class="fas fa-lock" id="toggleSenha" style="cursor: pointer;"></i>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="Confirmarsenha">Confirmar Senha</label>
+                        <input type="password" id="Confirmarsenha" placeholder="Confirme a senha" required>
+                        <i class="fas fa-lock" id="toggleConfirmarSenha" style="cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <button type="submit">Cadastrar</button>
+                </div>
+            </form>
         </div>
     </div>
-
-    <script>
-        function openoi() {
-            window.location.href = '/oi'; // Redireciona para a página de login ou cadastro
-        }
-       
-    </script>
 </body>
+
 </html>
